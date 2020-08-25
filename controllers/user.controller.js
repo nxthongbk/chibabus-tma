@@ -1,5 +1,5 @@
 const User = require('../db/models/user');
-const bcrypt = require('bcrypt');
+const bcrypt = require('bcryptjs');
 module.exports = {
     createUser : (req, res) =>{
         const {email, password} = req.body;

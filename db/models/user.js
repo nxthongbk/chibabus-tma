@@ -1,6 +1,6 @@
 let mongoose = require('mongoose');
 const validator = require('validator');
-const bcrypt = require('bcrypt');
+const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken')
 let userSchema = new mongoose.Schema({
     email: {
@@ -33,7 +33,7 @@ userSchema.pre('save', async function (next) {
 userSchema.statics.findByCredentials = async (email, password) => {
     const user = await User.findOne({email});
     if (!user) return null;
-    const isPasswordMatch = await bcrypt.compareSync(password, user.password)
+    const isPasswordMatch = await bcrypt.compare(password, user.password)
     if (!isPasswordMatch) return null;
     return user
 }

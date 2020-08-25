@@ -47,5 +47,13 @@ module.exports = {
             res.sendStatus(400);
             throw new Error(err);
         })
+    },
+    test :async (req, res) =>{
+        Device.aggregate([
+            { $project: { license_plate:1, driver:1 } },
+            { $group :  {_id : "$driver", count:{$sum:1}} }
+        ]).then(aggregate=>{
+            res.send(aggregate)
+        });
     }
 }
