@@ -1,8 +1,9 @@
 const Device = require('../db/models/device');
 module.exports = {
     createDevice : (req, res) => {
-        const { license_plate, driver } = req.body;
-        if(!license_plate || !driver) return res.sendStatus(400);
+        console.log('create device', req.body)
+        const { license_plate, driver, line } = req.body;
+        if(!license_plate || !driver || !line) return res.sendStatus(400);
         Device.create(req.body).then(() =>{
             res.status(200).send({status:"ok"})
         }).catch(err=>{

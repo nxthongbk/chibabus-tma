@@ -92,7 +92,7 @@ module.exports = {
         }
       }
     }]).sort({
-      _id: -1
+      _id: 1
     }).limit(7).then(function (data) {
       return res.send(data);
     })["catch"](function (err) {
@@ -118,11 +118,97 @@ module.exports = {
         }
       }
     }]).sort({
-      _id: -1
+      _id: 1
     }).limit(7).then(function (data) {
       return res.send(data);
     })["catch"](function (err) {
       return res.send(err);
+    });
+  },
+  getBusCounterBasedMonth: function getBusCounterBasedMonth(req, res) {
+    var year, month, data;
+    return regeneratorRuntime.async(function getBusCounterBasedMonth$(_context) {
+      while (1) {
+        switch (_context.prev = _context.next) {
+          case 0:
+            year = req.params.month.split("-")[0];
+            month = req.params.month.split("-")[1];
+            _context.next = 4;
+            return regeneratorRuntime.awrap(BusCounter.aggregate([{
+              $project: {
+                state: 1,
+                image: 1,
+                lat: 1,
+                "long": 1,
+                age: 1,
+                gender: 1,
+                device_id: 1,
+                timestamp: 1,
+                month: {
+                  $month: '$timestamp'
+                },
+                year: {
+                  $year: '$timestamp'
+                }
+              }
+            }, {
+              $match: {
+                month: parseInt(month),
+                year: parseInt(year)
+              }
+            }]));
+
+          case 4:
+            data = _context.sent;
+            res.json(data);
+
+          case 6:
+          case "end":
+            return _context.stop();
+        }
+      }
+    });
+  },
+  getBusCounterBasedDate: function getBusCounterBasedDate(req, res) {
+    var date, data;
+    return regeneratorRuntime.async(function getBusCounterBasedDate$(_context2) {
+      while (1) {
+        switch (_context2.prev = _context2.next) {
+          case 0:
+            date = req.params.date;
+            _context2.next = 3;
+            return regeneratorRuntime.awrap(BusCounter.aggregate([{
+              $project: {
+                state: 1,
+                image: 1,
+                lat: 1,
+                "long": 1,
+                age: 1,
+                gender: 1,
+                device_id: 1,
+                timestamp: 1,
+                date: {
+                  $dateToString: {
+                    format: "%Y-%m-%d",
+                    date: '$timestamp'
+                  }
+                }
+              }
+            }, {
+              $match: {
+                date: date
+              }
+            }]));
+
+          case 3:
+            data = _context2.sent;
+            res.json(data);
+
+          case 5:
+          case "end":
+            return _context2.stop();
+        }
+      }
     });
   }
 };

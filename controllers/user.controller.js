@@ -16,7 +16,8 @@ module.exports = {
         })
     },
     login: async (req, res) =>{
-        const {email, password} = req.body;
+        const { email, password } = req.body;
+        console.log(req.body)
         if(!email || !password) return res.status(400).send({
             'error':"require email and password"
         })
@@ -71,7 +72,6 @@ module.exports = {
             res.sendStatus(400);
             throw new Error(err);
         })
-       
-
+    
     }
 }

@@ -24,6 +24,7 @@ app.use(cors());
 app.use(express.static(path.join(__dirname,'public')));
 app.use(express.static(path.join(__dirname, 'node_modules')));
 app.use(passport.initialize());
+app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json());
 require('./db/connect');
 
@@ -55,11 +56,13 @@ app.get('/api/device/test', deviceController.test);
 app.get('/api/buscounter', busCounterController.getBusCounters);
 app.get('/api/buscounter/id/:id', busCounterController.getBusCounter);
 app.get('/api/buscounter/device_id/:id', busCounterController.getBusCounterBasedDevice);
+app.get('/api/buscounter/month/:month', busCounterController.getBusCounterBasedMonth);
+app.get('/api/buscounter/date/:date', busCounterController.getBusCounterBasedDate);
 app.post('/api/buscounter', upload.single('file'), busCounterController.createBusCounter);
 app.put('/api/buscounter/id/:id', busCounterController.updateBusCounter);
 app.delete('/api/buscounter', busCounterController.deleteBusCounter);
-app.get('/api/buscounter/statistic/customer_on_day', busCounterController.getCustomerOnDay)
-app.get('/api/buscounter/statistic/customer_on_month', busCounterController.getCustomerOnMonth)
+app.get('/api/buscounter/statistic/customer_on_day', busCounterController.getCustomerOnDay);
+app.get('/api/buscounter/statistic/customer_on_month', busCounterController.getCustomerOnMonth);
 
 //route for blueprint.
 app.get('/api/blueprint', blueprintController.getBlueprints);
